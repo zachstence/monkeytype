@@ -314,7 +314,12 @@ if (IsOffline(false)) {
 }
 
 export function signIn(): void {
-  if (IsOffline() || !Auth || !authListener) return; //the or is needed for typescript to stop complaining
+  if (IsOffline()) return;
+  if (!Auth) return;
+  if (!authListener) return;
+  // using multiple guards to stop typescript from complaining
+  // if Auth is null then we are automatically offline - the first guard will always trigger
+
   UpdateConfig.setChangedBeforeDb(false);
   authListener();
   LoginPage.showPreloader();
@@ -412,7 +417,12 @@ export async function signInWithGoogle(): Promise<void> {
 }
 
 export async function addGoogleAuth(): Promise<void> {
-  if (IsOffline() || !Auth || !authListener) return; //the or is needed for typescript to stop complaining
+  if (IsOffline()) return;
+  if (!Auth?.currentUser) return;
+  if (!authListener) return;
+  // using multiple guards to stop typescript from complaining
+  // if Auth is null then we are automatically offline - the first guard will always trigger
+
   Loader.show();
   linkWithPopup(Auth.currentUser, gmailProvider)
     .then(function () {
@@ -517,7 +527,12 @@ export async function addPasswordAuth(
 }
 
 export function signOut(): void {
+  if (IsOffline()) return;
   if (!Auth?.currentUser) return;
+  if (!authListener) return;
+  // using multiple guards to stop typescript from complaining
+  // if Auth is null then we are automatically offline - the first guard will always trigger
+
   Auth.signOut()
     .then(function () {
       Notifications.add("Signed out", 0, 2);
@@ -536,7 +551,12 @@ export function signOut(): void {
 }
 
 async function signUp(): Promise<void> {
-  if (!Auth) return;
+  if (IsOffline()) return;
+  if (!Auth?.currentUser) return;
+  if (!authListener) return;
+  // using multiple guards to stop typescript from complaining
+  // if Auth is null then we are automatically offline - the first guard will always trigger
+
   LoginPage.disableInputs();
   LoginPage.disableSignUpButton();
   LoginPage.showPreloader();
@@ -673,7 +693,12 @@ async function signUp(): Promise<void> {
 }
 
 $(".pageLogin #forgotPasswordButton").on("click", () => {
-  if (!Auth) return;
+  if (IsOffline()) return;
+  if (!Auth?.currentUser) return;
+  if (!authListener) return;
+  // using multiple guards to stop typescript from complaining
+  // if Auth is null then we are automatically offline - the first guard will always trigger
+
   const emailField =
     ($(".pageLogin .login input")[0] as HTMLInputElement).value || "";
   const email = prompt("Email address", emailField);
