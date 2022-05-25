@@ -1,6 +1,7 @@
 const staticCacheName = "sw-cache"; // this is given a unique name on build
 
 self.addEventListener("activate", (event) => {
+  console.log("activated");
   caches.keys().then((names) => {
     for (let name of names) {
       if (name !== staticCacheName) event.waitUntil(caches.delete(name));
@@ -10,6 +11,7 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("install", (event) => {
+  console.log("installed");
   event.waitUntil(self.skipWaiting());
   event.waitUntil(
     caches.open(staticCacheName).then((cache) => {

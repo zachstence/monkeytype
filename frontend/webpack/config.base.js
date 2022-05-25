@@ -6,6 +6,12 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const RemovePlugin = require("remove-files-webpack-plugin");
 const ExtraWatchWebpackPlugin = require("extra-watch-webpack-plugin");
 
+function pad(numbers, maxLength, fillString) {
+  return numbers.map((number) =>
+    number.toString().padStart(maxLength, fillString)
+  );
+}
+
 let circularImports = 0;
 
 const htmlWebpackPlugins = [
@@ -35,6 +41,31 @@ const BASE_CONFIG = {
   },
   module: {
     rules: [
+      {
+        test: /sw\.js$/,
+        loader: "string-replace-loader",
+        options: {
+          search: /^const staticCacheName =.*/,
+          replace() {
+            // const date = new Date();
+
+            // const versionPrefix = pad(
+            //   [date.getFullYear(), date.getMonth() + 1, date.getDate()],
+            //   2,
+            //   "0"
+            // ).join(".");
+            // const versionSuffix = pad(
+            //   [date.getHours(), date.getMinutes()],
+            //   2,
+            //   "0"
+            // ).join(".");
+            const version = "ugh";
+
+            return `const staticCacheName = "sw-cache-${version}";`;
+          },
+          flags: "g",
+        },
+      },
       { test: /\.tsx?$/, loader: "ts-loader" },
       {
         test: /\.s[ac]ss$/i,
