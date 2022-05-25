@@ -745,7 +745,7 @@ export async function updateLbMemory<M extends MonkeyTypes.Mode>(
 }
 
 export async function saveConfig(config: MonkeyTypes.Config): Promise<void> {
-  if (Auth?.currentUser !== null) {
+  if (Auth?.currentUser) {
     AccountButton.loading(true);
 
     const response = await Ape.configs.save(config);
