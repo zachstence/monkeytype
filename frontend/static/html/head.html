@@ -65,9 +65,17 @@
   <script>
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.getRegistrations().then(function (registrations) {
+        let found = false;
         for (let registration of registrations) {
-          // if (registration.scope !== "https://monkeytype.com/")
-          registration.unregister();
+          if (registration.scope !== location.origin + "/") {
+            registration.unregister();
+          } else {
+            found = true;
+            registration.update();
+          }
+        }
+        if (!found) {
+          navigator.serviceWorker.register("sw.js");
         }
       });
     }
