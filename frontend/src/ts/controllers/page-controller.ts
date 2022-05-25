@@ -39,7 +39,7 @@ export async function change(
       }
       page = path;
 
-      if (Auth.currentUser && page === "login") {
+      if (Auth?.currentUser && page === "login") {
         page = "account";
       }
     }

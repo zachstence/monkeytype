@@ -33,6 +33,7 @@ if (acceptedCookies !== null) {
 }
 
 export function activateAnalytics(): void {
+  if (!firebaseApp) return;
   Analytics = getAnalytics(firebaseApp);
   setAnalyticsCollectionEnabled(Analytics, true);
   $("body").append(`

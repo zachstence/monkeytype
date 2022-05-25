@@ -108,7 +108,7 @@ function updateFooter(lb: LbKey): void {
     side = "right";
   }
 
-  if (!Auth.currentUser) {
+  if (!Auth?.currentUser) {
     $(`#leaderboardsWrapper table.${side} tfoot`).html(`
     <tr>
       <td colspan="6" style="text-align:center;"></>
@@ -308,7 +308,7 @@ async function update(): Promise<void> {
     Ape.leaderboards.get("english", "time", "60", 0),
   ];
 
-  if (Auth.currentUser) {
+  if (Auth?.currentUser) {
     leaderboardRequests.push(
       Ape.leaderboards.getRank("english", "time", "15"),
       Ape.leaderboards.getRank("english", "time", "60")
@@ -416,7 +416,7 @@ async function requestNew(lb: LbKey, skip: number): Promise<void> {
 
 export function show(): void {
   if ($("#leaderboardsWrapper").hasClass("hidden")) {
-    if (Auth.currentUser) {
+    if (Auth?.currentUser) {
       $("#leaderboardsWrapper #leaderboards .rightTableJumpToMe").removeClass(
         "disabled"
       );

@@ -286,8 +286,8 @@ list["updateEmail"] = new SimplePopup(
   "Update",
   async (_thisPopup, password, email, emailConfirm) => {
     try {
-      const user = Auth.currentUser;
-      if (user === null) return;
+      const user = Auth?.currentUser;
+      if (!user) return;
       if (email !== emailConfirm) {
         Notifications.add("Emails don't match", 0);
         return;
@@ -325,8 +325,8 @@ list["updateEmail"] = new SimplePopup(
     }
   },
   (thisPopup) => {
-    const user = Auth.currentUser;
-    if (user === null) return;
+    const user = Auth?.currentUser;
+    if (!user) return;
     if (!user.providerData.find((p) => p?.providerId === "password")) {
       thisPopup.inputs = [];
       thisPopup.buttonText = "";
@@ -358,8 +358,8 @@ list["updateName"] = new SimplePopup(
   "Update",
   async (_thisPopup, pass, newName) => {
     try {
-      const user = Auth.currentUser;
-      if (user === null) return;
+      const user = Auth?.currentUser;
+      if (!user) return;
       if (user.providerData[0].providerId === "password") {
         const credential = EmailAuthProvider.credential(
           user.email as string,
@@ -408,8 +408,8 @@ list["updateName"] = new SimplePopup(
     Loader.hide();
   },
   (thisPopup) => {
-    const user = Auth.currentUser;
-    if (user === null) return;
+    const user = Auth?.currentUser;
+    if (!user) return;
     if (user.providerData[0].providerId === "google.com") {
       thisPopup.inputs[0].hidden = true;
       thisPopup.buttonText = "Reauthenticate to update";
@@ -450,8 +450,8 @@ list["updatePassword"] = new SimplePopup(
   "Update",
   async (_thisPopup, previousPass, newPass, newPassConfirm) => {
     try {
-      const user = Auth.currentUser;
-      if (user === null) return;
+      const user = Auth?.currentUser;
+      if (!user) return;
       const credential = EmailAuthProvider.credential(
         user.email as string,
         previousPass
@@ -479,8 +479,8 @@ list["updatePassword"] = new SimplePopup(
     }
   },
   (thisPopup) => {
-    const user = Auth.currentUser;
-    if (user === null) return;
+    const user = Auth?.currentUser;
+    if (!user) return;
     if (!user.providerData.find((p) => p?.providerId === "password")) {
       thisPopup.inputs = [];
       thisPopup.buttonText = "";
@@ -557,8 +557,8 @@ list["deleteAccount"] = new SimplePopup(
   async (_thisPopup, password: string) => {
     //
     try {
-      const user = Auth.currentUser;
-      if (user === null) return;
+      const user = Auth?.currentUser;
+      if (!user) return;
       if (user.providerData[0].providerId === "password") {
         const credential = EmailAuthProvider.credential(
           user.email as string,
@@ -593,7 +593,7 @@ list["deleteAccount"] = new SimplePopup(
       }
 
       Notifications.add("Deleting login information...", 0);
-      await Auth.currentUser?.delete();
+      await Auth?.currentUser?.delete();
 
       Notifications.add("Goodbye", 1, 5);
 
@@ -611,8 +611,8 @@ list["deleteAccount"] = new SimplePopup(
     }
   },
   (thisPopup) => {
-    const user = Auth.currentUser;
-    if (user === null) return;
+    const user = Auth?.currentUser;
+    if (!user) return;
     if (user.providerData[0].providerId === "google.com") {
       thisPopup.inputs = [];
       thisPopup.buttonText = "Reauthenticate to delete";
@@ -703,8 +703,8 @@ list["resetPersonalBests"] = new SimplePopup(
   "Reset",
   async (_thisPopup, password: string) => {
     try {
-      const user = Auth.currentUser;
-      if (user === null) return;
+      const user = Auth?.currentUser;
+      if (!user) return;
       if (user.providerData[0].providerId === "password") {
         const credential = EmailAuthProvider.credential(
           user.email as string,
@@ -739,8 +739,8 @@ list["resetPersonalBests"] = new SimplePopup(
     }
   },
   (thisPopup) => {
-    const user = Auth.currentUser;
-    if (user === null) return;
+    const user = Auth?.currentUser;
+    if (!user) return;
     if (user.providerData[0].providerId === "google.com") {
       thisPopup.inputs = [];
       thisPopup.buttonText = "Reauthenticate to reset";

@@ -28,7 +28,7 @@ export async function initSnapshot(): Promise<
   //send api request with token that returns tags, presets, and data needed for snap
   const snap = defaultSnap;
   try {
-    if (Auth.currentUser == null) return false;
+    if (Auth?.currentUser == null) return false;
     // if (ActivePage.get() == "loading") {
     //   LoadingPage.updateBar(22.5);
     // } else {
@@ -171,7 +171,7 @@ export async function initSnapshot(): Promise<
 }
 
 export async function getUserResults(): Promise<boolean> {
-  const user = Auth.currentUser;
+  const user = Auth?.currentUser;
   if (user == null) return false;
   if (dbSnapshot === null) return false;
   if (dbSnapshot.results !== undefined) {
@@ -247,7 +247,7 @@ export async function editCustomTheme(
   themeId: string,
   newTheme: MonkeyTypes.RawCustomTheme
 ): Promise<boolean> {
-  const user = Auth.currentUser;
+  const user = Auth?.currentUser;
   if (user === null) return false;
   if (dbSnapshot === null) return false;
 
@@ -278,7 +278,7 @@ export async function editCustomTheme(
 }
 
 export async function deleteCustomTheme(themeId: string): Promise<boolean> {
-  const user = Auth.currentUser;
+  const user = Auth?.currentUser;
   if (user === null) return false;
   if (dbSnapshot === null) return false;
 
@@ -745,7 +745,7 @@ export async function updateLbMemory<M extends MonkeyTypes.Mode>(
 }
 
 export async function saveConfig(config: MonkeyTypes.Config): Promise<void> {
-  if (Auth.currentUser !== null) {
+  if (Auth?.currentUser !== null) {
     AccountButton.loading(true);
 
     const response = await Ape.configs.save(config);

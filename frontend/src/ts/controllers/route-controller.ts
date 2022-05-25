@@ -46,7 +46,7 @@ $(window).on("popstate", (e) => {
     // show about
     PageController.change("about");
   } else if (state == "account" || state == "login") {
-    if (Auth.currentUser) {
+    if (Auth?.currentUser) {
       PageController.change("account");
     } else {
       PageController.change("login");

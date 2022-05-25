@@ -51,13 +51,14 @@ import {
   hideFavoriteQuoteLength,
   showFavoriteQuoteLength,
 } from "../test/test-config";
+import IsOffline from "../states/is-offline";
 
 export const gmailProvider = new GoogleAuthProvider();
 
 export function sendVerificationEmail(): void {
   Loader.show();
-  const user = Auth.currentUser;
-  if (user === null) return;
+  const user = Auth?.currentUser;
+  if (!user) return;
   sendEmailVerification(user)
     .then(() => {
       Loader.hide();
@@ -259,7 +260,7 @@ export async function loadUser(user: UserType): Promise<void> {
   }
 }
 
-const authListener = Auth.onAuthStateChanged(async function (user) {
+const authListener = Auth?.onAuthStateChanged(async function (user) {
   // await UpdateConfig.loadPromise;
   const search = window.location.search;
   console.log(`auth state changed, user ${user ? true : false}`);
@@ -296,7 +297,24 @@ const authListener = Auth.onAuthStateChanged(async function (user) {
   PSA.show();
 });
 
+if (!authListener) {
+  setTimeout(() => {
+    const search = window.location.search;
+    if (window.location.pathname == "/account") {
+      window.history.replaceState("", "", "/login");
+    }
+    PageTransition.set(false);
+    PageController.change();
+    setTimeout(() => {
+      Focus.set(false);
+    }, 125 / 2);
+    URLHandler.loadCustomThemeFromUrl(search);
+    URLHandler.loadTestSettingsFromUrl(search);
+  }, 1000);
+}
+
 export function signIn(): void {
+  if (IsOffline() || !Auth || !authListener) return; //the or is needed for typescript to stop complaining
   UpdateConfig.setChangedBeforeDb(false);
   authListener();
   LoginPage.showPreloader();
@@ -311,6 +329,7 @@ export function signIn(): void {
     : browserSessionPersistence;
 
   setPersistence(Auth, persistence).then(function () {
+    if (!Auth) return;
     return signInWithEmailAndPassword(Auth, email, password)
       .then(async (e) => {
         await loadUser(e.user);
@@ -352,12 +371,13 @@ export function signIn(): void {
 }
 
 export async function signInWithGoogle(): Promise<void> {
+  if (!Auth) return;
   UpdateConfig.setChangedBeforeDb(false);
   LoginPage.showPreloader();
   LoginPage.disableInputs();
   LoginPage.disableSignUpButton();
   LoginPage.disableSignInButton();
-  authListener();
+  if (authListener) authListener();
   const persistence = $(".pageLogin .login #rememberMe input").prop("checked")
     ? browserLocalPersistence
     : browserSessionPersistence;
@@ -393,8 +413,8 @@ export async function signInWithGoogle(): Promise<void> {
 
 export async function addGoogleAuth(): Promise<void> {
   Loader.show();
-  if (Auth.currentUser === null) return;
-  linkWithPopup(Auth.currentUser, gmailProvider)
+  if (!Auth?.currentUser) return;
+  linkWithPopup(Auth?.currentUser, gmailProvider)
     .then(function () {
       Loader.hide();
       Notifications.add("Google authentication added", 1);
@@ -410,8 +430,8 @@ export async function addGoogleAuth(): Promise<void> {
 }
 
 export function noGoogleNoMo(): void {
-  const user = Auth.currentUser;
-  if (user === null) return;
+  const user = Auth?.currentUser;
+  if (!user) return;
   if (
     user.providerData.find((provider) => provider.providerId === "password")
   ) {
@@ -427,8 +447,8 @@ export function noGoogleNoMo(): void {
 }
 
 export async function removeGoogleAuth(): Promise<void> {
-  const user = Auth.currentUser;
-  if (user === null) return;
+  const user = Auth?.currentUser;
+  if (!user) return;
   if (
     user.providerData.find((provider) => provider.providerId === "password")
   ) {
@@ -466,8 +486,8 @@ export async function addPasswordAuth(
   password: string
 ): Promise<void> {
   Loader.show();
-  const user = Auth.currentUser;
-  if (user === null) return;
+  const user = Auth?.currentUser;
+  if (!user) return;
   if (
     user.providerData.find((provider) => provider.providerId === "google.com")
   ) {
@@ -497,7 +517,7 @@ export async function addPasswordAuth(
 }
 
 export function signOut(): void {
-  if (!Auth.currentUser) return;
+  if (!Auth?.currentUser) return;
   Auth.signOut()
     .then(function () {
       Notifications.add("Signed out", 0, 2);
@@ -516,6 +536,7 @@ export function signOut(): void {
 }
 
 async function signUp(): Promise<void> {
+  if (!Auth) return;
   LoginPage.disableInputs();
   LoginPage.disableSignUpButton();
   LoginPage.showPreloader();
@@ -589,7 +610,7 @@ async function signUp(): Promise<void> {
     return;
   }
 
-  authListener();
+  if (authListener) authListener();
 
   let createdAuthUser;
   try {
@@ -652,6 +673,7 @@ async function signUp(): Promise<void> {
 }
 
 $(".pageLogin #forgotPasswordButton").on("click", () => {
+  if (!Auth) return;
   const emailField =
     ($(".pageLogin .login input")[0] as HTMLInputElement).value || "";
   const email = prompt("Email address", emailField);

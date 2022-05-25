@@ -1188,7 +1188,7 @@ const commandsRandomTheme: MonkeyTypes.CommandsGroup = {
       display: "custom",
       configValue: "custom",
       exec: (): void => {
-        if (Auth.currentUser === null) {
+        if (Auth?.currentUser === null) {
           Notifications.add(
             "Multiple custom themes are available to logged in users only",
             0
@@ -1293,7 +1293,7 @@ export const customThemeListCommands: MonkeyTypes.CommandsGroup = {
 };
 
 export function updateCustomThemeListCommands(): void {
-  if (Auth.currentUser === null) {
+  if (Auth?.currentUser === null) {
     return;
   }
 
@@ -2065,7 +2065,7 @@ const commandsQuoteLengthConfig: MonkeyTypes.CommandsGroup = {
       configValue: -3,
       configValueMode: "include",
       available: (): boolean => {
-        return !!Auth.currentUser;
+        return !!Auth?.currentUser;
       },
       exec: (): void => {
         UpdateConfig.setMode("quote");
@@ -2674,7 +2674,7 @@ export const defaultCommands: MonkeyTypes.CommandsGroup = {
         updateTagCommands();
       },
       available: (): boolean => {
-        return !!Auth.currentUser;
+        return !!Auth?.currentUser;
       },
       // exec: (): void => {
       //   updateTagCommands();
@@ -2692,7 +2692,7 @@ export const defaultCommands: MonkeyTypes.CommandsGroup = {
         updatePresetCommands();
       },
       available: (): boolean => {
-        return !!Auth.currentUser;
+        return !!Auth?.currentUser;
       },
       // exec: (): void => {
       //   updatePresetCommands();
@@ -2949,7 +2949,7 @@ export const defaultCommands: MonkeyTypes.CommandsGroup = {
       subgroup: customThemeListCommands,
       beforeSubgroup: (): void => updateCustomThemeListCommands(),
       available: (): boolean => {
-        return Auth.currentUser !== null;
+        return Auth?.currentUser !== null;
       },
     },
     {

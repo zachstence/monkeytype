@@ -685,7 +685,7 @@ $(document).on("click", "#testModesNotice .text-button", (event) => {
 $(document).on("click", "#bottom .leftright .right .current-theme", (e) => {
   if (e.shiftKey) {
     if (!Config.customTheme) {
-      if (Auth.currentUser !== null) {
+      if (Auth?.currentUser !== null) {
         if (DB.getSnapshot().customThemes.length < 1) {
           Notifications.add("No custom themes!", 0);
           UpdateConfig.setCustomTheme(false);

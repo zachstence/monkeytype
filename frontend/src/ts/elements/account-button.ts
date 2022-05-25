@@ -14,7 +14,7 @@ export function loading(truefalse: boolean): void {
 }
 
 export function update(): void {
-  if (Auth.currentUser != null) {
+  if (Auth?.currentUser) {
     Misc.swapElements(
       $("#menu .text-button.login"),
       $("#menu .text-button.account"),
