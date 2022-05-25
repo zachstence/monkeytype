@@ -23,19 +23,23 @@ if (window.location.hostname === "localhost") {
   });
 }
 
-$("#nocss .requestedStylesheets").html(
-  "Requested stylesheets:<br>" +
-    (
-      [
-        ...document.querySelectorAll("link[rel=stylesheet"),
-      ] as HTMLAnchorElement[]
-    )
-      .map((l) => l.href)
-      .filter((l) => /\/css\//gi.test(l))
-      .join("<br>") +
-    "<br><br>Client version:<br>" +
-    CLIENT_VERSION
-);
+caches.keys().then((keys) => {
+  $("#nocss .requestedStylesheets").html(
+    "Requested stylesheets:<br>" +
+      (
+        [
+          ...document.querySelectorAll("link[rel=stylesheet"),
+        ] as HTMLAnchorElement[]
+      )
+        .map((l) => l.href)
+        .filter((l) => /\/css\//gi.test(l))
+        .join("<br>") +
+      "<br><br>Client Version:<br>" +
+      CLIENT_VERSION +
+      "<br><br>SW Cache Version:<br>" +
+      keys
+  );
+});
 
 Focus.set(true, true);
 RouteController.handleInitialPageClasses(window.location.pathname);
