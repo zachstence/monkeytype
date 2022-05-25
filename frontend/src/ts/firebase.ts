@@ -8,10 +8,10 @@ import { setToTrue as setOfflineTrue } from "./states/is-offline";
 export let app: FirebaseApp | null = null;
 export let Auth: AuthType | null = null;
 
-const a = true;
+// const a = true;
 
 try {
-  if (a) throw new Error("Offline");
+  // if (a) throw new Error("Offline");
   app = initializeApp(firebaseConfig);
   Auth = getAuth(app);
 } catch (e) {
