@@ -267,7 +267,7 @@ export function startTest(): boolean {
     UpdateConfig.setChangedBeforeDb(true);
   }
 
-  if (Auth?.currentUser !== null) {
+  if (Auth?.currentUser) {
     AnalyticsController.log("testStarted");
   } else {
     AnalyticsController.log("testStartedNoLogin");
@@ -1504,7 +1504,7 @@ export async function finish(difficultyFailed = false): Promise<void> {
     Result.updateTodayTracker();
   }
 
-  if (Auth?.currentUser == null) {
+  if (!Auth?.currentUser) {
     $(".pageTest #result #rateQuoteButton").addClass("hidden");
     $(".pageTest #result #reportQuoteButton").addClass("hidden");
     AnalyticsController.log("testCompletedNoLogin");

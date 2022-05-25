@@ -1188,7 +1188,7 @@ const commandsRandomTheme: MonkeyTypes.CommandsGroup = {
       display: "custom",
       configValue: "custom",
       exec: (): void => {
-        if (Auth?.currentUser === null) {
+        if (!Auth?.currentUser) {
           Notifications.add(
             "Multiple custom themes are available to logged in users only",
             0
@@ -1293,7 +1293,7 @@ export const customThemeListCommands: MonkeyTypes.CommandsGroup = {
 };
 
 export function updateCustomThemeListCommands(): void {
-  if (Auth?.currentUser === null) {
+  if (!Auth?.currentUser) {
     return;
   }
 
@@ -2949,7 +2949,7 @@ export const defaultCommands: MonkeyTypes.CommandsGroup = {
       subgroup: customThemeListCommands,
       beforeSubgroup: (): void => updateCustomThemeListCommands(),
       available: (): boolean => {
-        return Auth?.currentUser !== null;
+        return !!Auth?.currentUser;
       },
     },
     {
