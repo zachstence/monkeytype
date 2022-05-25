@@ -28,7 +28,7 @@ export async function initSnapshot(): Promise<
   //send api request with token that returns tags, presets, and data needed for snap
   const snap = defaultSnap;
   try {
-    if (Auth?.currentUser) return false;
+    if (!Auth?.currentUser) return false;
     // if (ActivePage.get() == "loading") {
     //   LoadingPage.updateBar(22.5);
     // } else {
