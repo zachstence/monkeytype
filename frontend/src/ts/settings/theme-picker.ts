@@ -110,7 +110,7 @@ export async function refreshButtons(): Promise<void> {
     ).empty();
     const addButton = $(".pageSettings .section.themes .addCustomThemeButton");
 
-    if (Auth?.currentUser === null) {
+    if (!Auth?.currentUser) {
       $(
         ".pageSettings .section.themes .customThemeEdit .saveCustomThemeButton"
       ).text("save");
