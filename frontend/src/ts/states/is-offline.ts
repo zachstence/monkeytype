@@ -7,9 +7,9 @@ export function setToTrue(): void {
   isOffline = true;
 }
 
-export default function get(): boolean {
+export default function get(notify = true): boolean {
   if (isOffline) {
-    Notifications.add("You are offline", 0);
+    if (notify) Notifications.add("You are offline", 0);
   }
   return isOffline;
 }

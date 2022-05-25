@@ -297,7 +297,7 @@ const authListener = Auth?.onAuthStateChanged(async function (user) {
   PSA.show();
 });
 
-if (!authListener) {
+if (IsOffline(false)) {
   setTimeout(() => {
     const search = window.location.search;
     if (window.location.pathname == "/account") {
@@ -371,7 +371,7 @@ export function signIn(): void {
 }
 
 export async function signInWithGoogle(): Promise<void> {
-  if (!Auth) return;
+  if (IsOffline() || !Auth || !authListener) return; //the or is needed for typescript to stop complaining
   UpdateConfig.setChangedBeforeDb(false);
   LoginPage.showPreloader();
   LoginPage.disableInputs();
@@ -412,9 +412,9 @@ export async function signInWithGoogle(): Promise<void> {
 }
 
 export async function addGoogleAuth(): Promise<void> {
+  if (IsOffline() || !Auth || !authListener) return; //the or is needed for typescript to stop complaining
   Loader.show();
-  if (!Auth?.currentUser) return;
-  linkWithPopup(Auth?.currentUser, gmailProvider)
+  linkWithPopup(Auth.currentUser, gmailProvider)
     .then(function () {
       Loader.hide();
       Notifications.add("Google authentication added", 1);
